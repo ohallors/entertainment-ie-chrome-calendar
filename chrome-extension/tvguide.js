@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const url = 'http://localhost:3000/fetch-tv-listings';
+    const url = 'http://localhost:4001/fetch-tv-listings';
     const searchInput = document.getElementById('searchInput');
     const dateSelector = document.getElementById('dateSelector');
     const spinner = document.getElementById('spinner');

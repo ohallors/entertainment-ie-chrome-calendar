@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "TV Guide Viewer",
+  "version": "1.0",
+  "description": "Fetch and display TV listings from entertainment.ie.",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    },
+    "default_title": "Open TV Guide"
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

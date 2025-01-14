@@ -76,20 +76,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 channelDiv.innerHTML = channelInfo;
 
+                const now = Date.now() / 1000; // Current time in seconds
+
                 filteredAirings.forEach(airing => {
                     const airingDiv = document.createElement('div');
-                    airingDiv.classList.add('program');
+
+                    // Apply the 'currently-airing' class if the program is currently airing
+                    if (airing.airing_start <= now && airing.airing_end >= now) {
+                        airingDiv.classList.add('program', 'currently-airing');
+                    } else {
+                        airingDiv.classList.add('program');
+                    }
 
                     const showImage = airing.image && airing.image.modal ?
                         `<img src="${airing.image.modal}" alt="${airing.title} image" style="height: 50px;">` : '';
 
                     const programDetails = `
-            <div class="program-details">
-              <h3>${airing.title}</h3>
-              <p>${airing.description}</p>
-              <span>${new Date(airing.airing_start * 1000).toLocaleString()}</span>
-            </div>
-          `;
+                <div class="program-details">
+                  <h3>${airing.title}</h3>
+                  <p>${airing.description}</p>
+                  <span>${new Date(airing.airing_start * 1000).toLocaleString()}</span>
+                </div>
+                `;
 
                     const addToCalendarButton = `<button class="add-to-calendar">Add to Calendar</button>`;
 

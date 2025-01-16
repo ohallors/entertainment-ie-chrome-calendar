@@ -93,7 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const programDetails = `
                 <div class="program-details">
-                  <h3>${airing.title}</h3>
+                  <h3>${airing.show.title}</h3>
+                  <h4>${airing.title}</h4>
                   <p>${airing.description}</p>
                   <span>${new Date(airing.airing_start * 1000).toLocaleString()}</span>
                 </div>

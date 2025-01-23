@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Add calendar button event listener
                     const button = airingDiv.querySelector('.add-to-calendar');
                     button.addEventListener('click', () => {
-                        addToCalendar(airing);
+                        addToCalendar(channel.name, airing);
                     });
                 });
 
@@ -125,9 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
         spinner.style.display = 'none';
     }
 
-    function addToCalendar(airing) {
-        const title = encodeURIComponent(airing.title);
-        const description = encodeURIComponent(airing.description || '');
+    function addToCalendar(channelName, airing) {
+        const titleText = airing.show.title !== airing.title ? `${airing.show.title} - ${airing.title}` : airing.title;
+        const title = encodeURIComponent(titleText);
+        const description = encodeURIComponent(`${channelName} - ${airing.description}`);
         const startDate = new Date(airing.airing_start * 1000).toISOString().replace(/-|:|\.\d+/g, '');
         const endDate = new Date(airing.airing_end * 1000).toISOString().replace(/-|:|\.\d+/g, '');
 

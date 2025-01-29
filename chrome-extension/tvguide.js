@@ -3,35 +3,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const dateSelector = document.getElementById('dateSelector');
     const spinner = document.getElementById('spinner');
+    const rugbyButton = document.getElementById('rugbyButton'); // Rugby Button
+    const soccerButton = document.getElementById('soccerButton'); // Soccer Button
+    const clearFiltersButton = document.getElementById('clearFiltersButton'); // Clear Filters Button
     let tvListings = [];
 
     populateDateDropdown();
     fetchListingsForSelectedDate();
 
-    dateSelector.addEventListener('change', () => {
-        fetchListingsForSelectedDate();
-    });
+    dateSelector.addEventListener('change', fetchListingsForSelectedDate);
 
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
         renderGuide(tvListings, searchTerm);
     });
 
+    rugbyButton.addEventListener('click', () => {
+        filterByKeywords(['leinster', 'munster']);
+    });
+
+    soccerButton.addEventListener('click', () => {
+        filterByKeywords(['liverpool', 'premier league review']);
+    });
+
+    clearFiltersButton.addEventListener('click', () => {
+        renderGuide(tvListings); // Reset to showing all listings
+    });
+
     function fetchListingsForSelectedDate() {
         const selectedDateOption = dateSelector.value;
         if (selectedDateOption) {
             const fetchUrl = `${url}?date=${formatDateForParam(selectedDateOption)}`;
-            showSpinner(); // Show spinner before fetching
+            showSpinner();
             fetch(fetchUrl)
                 .then(response => response.json())
                 .then(data => {
-                    hideSpinner(); // Hide spinner once data is ready
+                    hideSpinner();
                     tvListings = data;
                     const currentSearchTerm = searchInput.value.toLowerCase();
                     renderGuide(tvListings, currentSearchTerm);
                 })
                 .catch(error => {
-                    hideSpinner(); // Hide spinner if there's an error
+                    hideSpinner();
                     console.error('Error fetching data:', error);
                 });
         }
@@ -43,18 +56,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const date = new Date(today);
             date.setDate(today.getDate() + i);
             const option = document.createElement("option");
-            option.value = date.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+            option.value = date.toISOString().slice(0, 10);
             option.textContent = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : date.toLocaleDateString();
             dateSelector.appendChild(option);
         }
 
-        // Set the default selected value to today
         dateSelector.value = today.toISOString().slice(0, 10);
     }
 
     function formatDateForParam(date) {
         const [year, month, day] = date.split("-");
         return `${day}-${month}-${year}`;
+    }
+
+    function filterByKeywords(keywords) {
+        const filteredListings = tvListings.data.map(channel => ({
+            ...channel,
+            airings: channel.airings.filter(airing =>
+                keywords.some(keyword =>
+                    (airing.show && airing.show.title.toLowerCase().includes(keyword)) ||
+                    (airing.title && airing.title.toLowerCase().includes(keyword)) ||
+                    (airing.description && airing.description.toLowerCase().includes(keyword))
+                )
+            )
+        })).filter(channel => channel.airings.length > 0);
+
+        renderGuide({ data: filteredListings });
     }
 
     function renderGuide(jsonData, filter = '') {
@@ -76,12 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 channelDiv.innerHTML = channelInfo;
 
-                const now = Date.now() / 1000; // Current time in seconds
+                const now = Date.now() / 1000;
 
                 filteredAirings.forEach(airing => {
                     const airingDiv = document.createElement('div');
 
-                    // Apply the 'currently-airing' class if the program is currently airing
                     if (airing.airing_start <= now && airing.airing_end >= now) {
                         airingDiv.classList.add('program', 'currently-airing');
                     } else {
@@ -92,20 +118,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         `<img src="${airing.image.modal}" alt="${airing.title} image" style="height: 50px;">` : '';
 
                     const programDetails = `
-                <div class="program-details">
-                  <h3>${airing.show.title}</h3>
-                  <h4>${airing.title}</h4>
-                  <p>${airing.description}</p>
-                  <span>${new Date(airing.airing_start * 1000).toLocaleString()}</span>
-                </div>
-                `;
+                        <div class="program-details">
+                          <h3>${airing.show.title}</h3>
+                          <h4>${airing.title}</h4>
+                          <p>${airing.description}</p>
+                          <span>${new Date(airing.airing_start * 1000).toLocaleString()}</span>
+                        </div>
+                        `;
 
                     const addToCalendarButton = `<button class="add-to-calendar">Add to Calendar</button>`;
 
                     airingDiv.innerHTML = `${showImage}${programDetails}${addToCalendarButton}`;
                     channelDiv.appendChild(airingDiv);
 
-                    // Add calendar button event listener
                     const button = airingDiv.querySelector('.add-to-calendar');
                     button.addEventListener('click', () => {
                         addToCalendar(channel.name, airing);

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const spinner = document.getElementById('spinner');
     const rugbyButton = document.getElementById('rugbyButton'); // Rugby Button
     const soccerButton = document.getElementById('soccerButton'); // Soccer Button
+    const australiaButton = document.getElementById('australiaButton'); // Soccer Button
     const clearFiltersButton = document.getElementById('clearFiltersButton'); // Clear Filters Button
     let tvListings = [];
 
@@ -19,11 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     rugbyButton.addEventListener('click', () => {
-        filterByKeywords(['leinster', 'munster']);
+        filterByKeywords(['leinster', 'munster', 'United Rugby Championship', 'URC', 'Six Nations']);
     });
 
     soccerButton.addEventListener('click', () => {
-        filterByKeywords(['liverpool', 'premier league review']);
+        filterByKeywords(['liverpool', 'premier league', 'netbusters', 'champions league']);
+    });
+
+    australiaButton.addEventListener('click', () => {
+        filterByKeywords(['australia']);
     });
 
     clearFiltersButton.addEventListener('click', () => {

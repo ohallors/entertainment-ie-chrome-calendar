@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const australiaButton = document.getElementById('australiaButton');
     const golfButton = document.getElementById('golfButton');
     const cyclingButton = document.getElementById('cyclingButton');
+    const gaaButton = document.getElementById('gaaButton');
     const clearFiltersButton = document.getElementById('clearFiltersButton'); // Clear Filters Button
     let tvListings = [];
 
@@ -39,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cyclingButton.addEventListener('click', () => {
         filterByKeywords(['cycling', 'uci', 'tour de france', 'giro', 'vuelta']);
+    });
+
+    gaaButton.addEventListener('click', () => {
+        filterByKeywords(['gaa', 'hurling', 'tipperary', 'longford']);
     });
 
     clearFiltersButton.addEventListener('click', () => {

@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const dateSelector = document.getElementById('dateSelector');
     const spinner = document.getElementById('spinner');
-    const rugbyButton = document.getElementById('rugbyButton'); // Rugby Button
-    const soccerButton = document.getElementById('soccerButton'); // Soccer Button
-    const australiaButton = document.getElementById('australiaButton'); // Soccer Button
+    const rugbyButton = document.getElementById('rugbyButton');
+    const soccerButton = document.getElementById('soccerButton');
+    const australiaButton = document.getElementById('australiaButton');
+    const golfButton = document.getElementById('golfButton');
+    const cyclingButton = document.getElementById('cyclingButton');
     const clearFiltersButton = document.getElementById('clearFiltersButton'); // Clear Filters Button
     let tvListings = [];
 
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     rugbyButton.addEventListener('click', () => {
-        filterByKeywords(['leinster', 'munster', 'United Rugby Championship', 'URC', 'Six Nations']);
+        filterByKeywords(['leinster', 'munster', 'united rugby championship', 'urc', 'six nations']);
     });
 
     soccerButton.addEventListener('click', () => {
@@ -29,6 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     australiaButton.addEventListener('click', () => {
         filterByKeywords(['australia']);
+    });
+
+    golfButton.addEventListener('click', () => {
+        filterByKeywords(['golf', 'pga', 'ryder cup','dp world tour', 'tgl']);
+    });
+
+    cyclingButton.addEventListener('click', () => {
+        filterByKeywords(['cycling', 'uci', 'tour de france', 'giro', 'vuelta']);
     });
 
     clearFiltersButton.addEventListener('click', () => {
